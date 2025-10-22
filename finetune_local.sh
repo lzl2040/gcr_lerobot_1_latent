@@ -1,0 +1,24 @@
+CUDA_VISIBLE_DEVICES=1,2,3,4 deepspeed --num_gpus=4 lerobot/scripts/dps_train.py \
+    --deepspeed="./ds_zero2_40G.json" \
+    --policy.type="pi0" \
+    --policy.use_lora=false \
+    --dataset.root="/Data/lerobot_data/simulated" \
+    --dataset.repo_id="any/simulted" \
+    --dataset.data_mix="simpler_bridge" \
+    --dataset.image_transforms.enable=false \
+    --wandb.enable=false \
+    --wandb.project="pi0-ft-simulated" \
+    --job_name="1021-simpler-bridge-train-expert" \
+    --log_dir="logs" \
+    --output_dir="/Data/lzl/latent-ft-simulated/1021-simpler-bridge-train-expert" \
+    --steps=60_000 \
+    --save_freq=5000 \
+    --policy.chunk_size=15 \
+    --policy.n_action_steps=15 \
+    --policy.train_expert_only=false \
+    --policy.freeze_vision_encoder=true \
+    --policy.optimizer_lr=2.5e-5 \
+    --policy.scheduler_warmup_steps=2000 \
+    --policy.scheduler_decay_steps=40000 \
+    --policy.pt_weight_path="/Data/lzl/latent_action/distill_latent_pi0_oxe/step30000.pt"
+    # --dataset.image_transforms.enable=true

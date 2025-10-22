@@ -1,0 +1,10 @@
+python -m accelerate.commands.launch --num_processes=8 lerobot/scripts/ds_train.py \
+    --policy.type="pi0" \
+    --dataset.root="/mnt/wangxiaofa/robot_dataset/libero_goal_no_noops_lerobot" \
+    --dataset.repo_id="any/simulted" \
+    --wandb.enable=true \
+    --wandb.project="pi0-ft-simulated" \
+    --job_name="pi0-04-15-ft-libero-goal-accelerator-1st" \
+    --log_dir="logs" \
+    --output_dir="/mnt/wangxiaofa/pi0-ft-simulated/0415-ft-libero-goal-accelerator-1st" \
+    --steps=60_000

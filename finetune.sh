@@ -1,0 +1,11 @@
+python lerobot/scripts/dps_train.py \
+    --deepspeed="./ds_zero2.json" \
+    --policy.type="pi0" \
+    --dataset.root="/mnt/wangxiaofa/robot_dataset/lerobot-format/libero_goal_no_noops_lerobot" \
+    --dataset.repo_id="any/simulted" \
+    --wandb.enable=true \
+    --wandb.project="pi0-ft-simulated" \
+    --job_name="pi0-04-15-80G-A100-ft-libero-goal-bs-16-8gpu-gra-acc-1-with-lr-decay-warm-1k-1st" \
+    --log_dir="/mnt/wangxiaofa/logs" \
+    --output_dir="/mnt/wangxiaofa/pi0-ft-simulated/0415-ft-80G-A100-libero-goal-bs-16-8gpu-gra-acc-1-with-lr-decay-warm-1k-1st" \
+    --steps=30_000
