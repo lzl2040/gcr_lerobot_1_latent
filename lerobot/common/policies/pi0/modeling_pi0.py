@@ -249,7 +249,8 @@ class PI0Policy(PreTrainedPolicy):
             config.output_features, config.normalization_mapping, dataset_stats
         )
 
-        self.language_tokenizer = AutoTokenizer.from_pretrained("/Data/lzl/huggingface/models--google--paligemma-3b-pt-224/snapshots/35e4f46485b4d07967e7e9935bc3786aad50687c/")
+        # self.language_tokenizer = AutoTokenizer.from_pretrained("/Data/lzl/huggingface/models--google--paligemma-3b-pt-224/snapshots/35e4f46485b4d07967e7e9935bc3786aad50687c/")
+        self.language_tokenizer = AutoTokenizer.from_pretrained("/mnt/wangxiaofa/RDT_module_params/paligemma-3b-pt-224/")
         COMPRESS_ACTION_TOKEN = "CP_ACT"
         COMPRESS_SC_TOKEN = "CP_SC"
         new_action_tokens = [f"[{COMPRESS_ACTION_TOKEN}]"]
@@ -262,7 +263,6 @@ class PI0Policy(PreTrainedPolicy):
         self.cp_sc_token_idx = [self.language_tokenizer(f"[{COMPRESS_SC_TOKEN}]", add_special_tokens=False).input_ids[0]]
         print(f"Pi0 CP_IMG token idx: {self.cp_sc_token_idx}, CP_ACT token idx: {self.cp_act_token_idx}")
         
-        # self.language_tokenizer = AutoTokenizer.from_pretrained("/mnt/wangxiaofa/RDT_module_params/paligemma-3b-pt-224/")
         self.model = PI0FlowMatching(config)
         self.model.paligemma_with_expert.paligemma.language_model.resize_token_embeddings(len(self.language_tokenizer))
         

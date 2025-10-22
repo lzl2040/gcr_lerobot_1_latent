@@ -45,3 +45,4 @@ python lerobot/scripts/dps_train.py \
     --policy.optimizer_lr=2.5e-5 \
     --policy.scheduler_warmup_steps=2000 \
     --policy.scheduler_decay_steps=40000 \
+    --policy.pt_weight_path="/mnt/wangxiaofa/latent_action_exp/1019_latent_action_distill_mse_loss/step40000.pt"
