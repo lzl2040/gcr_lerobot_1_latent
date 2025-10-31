@@ -21,7 +21,7 @@ while [[ $# -gt 0 ]]; do
 done
 OUTPUT_DIR="/mnt/wangxiaofa/latent-ft-simulated/${JOB_NAME}"
 
-python lerobot/scripts/dps_train.py \
+python -m lerobot.scripts.dps_train \
     --deepspeed="./ds_zero2_40G.json" \
     --policy.type="pi0" \
     --policy.use_lora=false \
@@ -29,7 +29,7 @@ python lerobot/scripts/dps_train.py \
     --dataset.repo_id="any/simulted" \
     --dataset.data_mix=$DATA_MIX \
     --dataset.use_state=$USE_STATE \
-    --dataset.image_transforms.enable=false \
+    --dataset.image_transforms.enable=true \
     --wandb.enable=false \
     --resume=true \
     --wandb.project="latent-ft-simulated" \
@@ -37,7 +37,7 @@ python lerobot/scripts/dps_train.py \
     --log_dir="/mnt/wangxiaofa/logs" \
     --output_dir=$OUTPUT_DIR \
     --steps=300_000 \
-    --save_freq=5000 \
+    --save_freq=10000 \
     --policy.chunk_size=15 \
     --policy.n_action_steps=15 \
     --policy.train_expert_only=false \
