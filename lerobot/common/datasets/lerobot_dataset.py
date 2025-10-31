@@ -169,12 +169,16 @@ class LeRobotDatasetMetadata:
         check_version_compatibility(self.repo_id, self._version, CODEBASE_VERSION)
         self.tasks, self.task_to_task_index = load_tasks(self.root)
         self.episodes = load_episodes(self.root)
-        if self._version < packaging.version.parse("v2.1"):
-            self.stats = load_stats(self.root)
-            self.episodes_stats = backward_compatible_episodes_stats(self.stats, self.episodes)
-        else:
+        self.stats = load_stats(self.root)
+        if self.stats == None:
             self.episodes_stats = load_episodes_stats(self.root)
             self.stats = aggregate_stats(list(self.episodes_stats.values()))
+        # if self._version < packaging.version.parse("v2.1"):
+        #     self.stats = load_stats(self.root)
+        #     self.episodes_stats = backward_compatible_episodes_stats(self.stats, self.episodes)
+        # else:
+        #     self.episodes_stats = load_episodes_stats(self.root)
+        #     self.stats = aggregate_stats(list(self.episodes_stats.values()))
 
     def pull_from_repo(
         self,
@@ -1448,12 +1452,12 @@ class MultiSameDataset(torch.utils.data.Dataset):
             if meta_features == None:
                 meta_features = ds_meta.features
             delta_timestamps = resolve_delta_timestamps(cfg.policy, ds_meta)
-            if "american" in d_name:
-                # episode_list = list(range(1501)) # 100个视频
-                episode_list = list(range(1501, 1601)) # 100个视频
-                # episode_list = list(range(1701))
-            else:
-                episode_list = None
+            # if "american" in d_name:
+            #     # episode_list = list(range(1501)) # 100个视频
+            #     episode_list = list(range(1501, 1601)) # 100个视频
+            #     # episode_list = list(range(1701))
+            # else:
+            #     episode_list = None
             dataset = LeRobotDataset(
                 repo_id, 
                 root=data_root,
@@ -1558,12 +1562,12 @@ class MultiSameDataset(torch.utils.data.Dataset):
         for new_key, old_key in image_obs_keys.items():
             if old_key != None:
                 item[f"observation.images.{new_key}"] = item[f"observation.images.{old_key}"]
-                exist_image = item[f"observation.images.{old_key}"]
-                if old_key != new_key:
-                    del item[f"observation.images.{old_key}"]
-            else:
-                # if missing, use zero
-                item[f"observation.images.{new_key}"] = torch.zeros_like(exist_image)
+                # exist_image = item[f"observation.images.{old_key}"]
+                # if old_key != new_key:
+                #     del item[f"observation.images.{old_key}"]
+            # else:
+            #     # if missing, use zero
+            #     item[f"observation.images.{new_key}"] = torch.zeros_like(exist_image)
         
         if self.use_state == False:
             item["observation.state"][:] = 0
@@ -1589,6 +1593,7 @@ class MultiSameDataset(torch.utils.data.Dataset):
         for i in range(64):
             task_text += f"[{COMPRESS_ACTION_TOKEN}] "
         task_text += "."
+        # 1023 forget add item["task"] = task_text
         return item 
 
 class MultiDatasetforDistTraining(torch.utils.data.Dataset):
